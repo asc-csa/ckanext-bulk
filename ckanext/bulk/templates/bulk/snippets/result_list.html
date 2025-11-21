@@ -16,10 +16,11 @@ total - Total number of entities matched
 {% else %}
   <div class="result-list-header">
     <p class="text-muted">
-      <strong>{{ entities|length }}</strong> of <strong>{{ total }}</strong>
-      {{ entity_type }}{{ 's' if total != 1 else '' }} will be affected
+      {% trans count=entities|length, total=total, entity_type=entity_type, plural='s' if total != 1 else '' %}
+        <strong>{{ count }}</strong> of <strong>{{ total }}</strong> {{ entity_type }}{{ plural }} will be affected
+      {% endtrans %}
       {% if entities|length < total %}
-        (showing first {{ entities|length }})
+        {% trans count=entities|length %}(showing first {{ count }}){% endtrans %}
       {% endif %}
     </p>
   </div>

@@ -1,0 +1,162 @@
+# Translations template for ckanext-bulk.
+# Copyright (C) 2025 ORGANIZATION
+# This file is distributed under the same license as the ckanext-bulk project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-bulk 0.4.1\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-11-21 12:23-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.15.0\n"
+
+#: ckanext/bulk/assets/vendor/tom-select.complete.min.js:276
+msgid "loading"
+msgstr ""
+
+#: ckanext/bulk/assets/vendor/tom-select.complete.min.js:276
+msgid "no_results"
+msgstr ""
+
+#: ckanext/bulk/assets/vendor/tom-select.complete.min.js:276
+msgid "not_loading"
+msgstr ""
+
+#: ckanext/bulk/assets/vendor/tom-select.complete.min.js:276
+msgid "option_create"
+msgstr ""
+
+#: ckanext/bulk/logic/action.py:35 ckanext/bulk/logic/action.py:42
+msgid "Entity not found"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/error.html:4
+msgid "Oops! An error happened!"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/error.html:10
+msgid "Not authorized to view this page"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager.html:4
+msgid "Bulk update manager"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager.html:15
+msgid "Bulk Edit Form"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:4
+msgid "Search Results"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:12
+msgid "Export Results CSV"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:16
+msgid "Click Search to find entities"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:19
+#: ckanext/bulk/templates/bulk/manager_info.html:16
+msgid "Loading..."
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:28
+msgid "Configure your filters and click Search. Results will appear here."
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:37
+msgid "Delete All Matches"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:44
+msgid "Update Fields"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:62
+msgid "Update All Matches"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:70
+msgid "Operation Logs"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_accordion.html:75
+msgid "Export Logs CSV"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_form.html:5
+msgid "Entity type"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_form.html:11
+msgid "Global operator:"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_form.html:13
+msgid "OR"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_form.html:14
+msgid "AND"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_form.html:21
+msgid "Filters"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_form.html:39
+msgid "Search"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_info.html:3
+msgid "Export result as CSV"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_info.html:9
+msgid "Export logs as CSV"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/manager_info.html:13
+msgid "There will be information about how many entities will be changed."
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/filter_item.html:5
+#: ckanext/bulk/templates/bulk/snippets/update_item.html:4
+msgid "Entity Field"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/filter_item.html:6
+msgid "Operator"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/filter_item.html:7
+#: ckanext/bulk/templates/bulk/snippets/update_item.html:5
+msgid "Value"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/result_list.html:19
+#, python-format
+msgid ""
+"<strong>%(count)s</strong> of <strong>%(total)s</strong> "
+"%(entity_type)s%(plural)s will be affected"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/result_list.html:23
+#, python-format
+msgid "(showing first %(count)s)"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/update_item.html:5
+msgid "New value"
+msgstr ""
+
