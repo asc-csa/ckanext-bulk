@@ -3,7 +3,6 @@
 
 <form action="{{ h.url_for('bulk.manager') }}" method="POST">
     {{ bulk_form.select('entity_type', label=_('Entity type'), options=h.bulk_entity_options(), error=errors.entity_type, classes=["bulk-select-entity"], settings={"data-module-custom-render": true}) }}
-    {{ bulk_form.select('action', label=_('Action'), options=h.bulk_action_options(), error=errors.action, classes=["bulk-select-action"]) }}
 
     <div class="form-group toggle-switch">
         <input type="checkbox" checked="checked" id="global_operator" name="global_operator" value="global_operator">
@@ -34,32 +33,13 @@
         <div class="filters-list-wrapper bulk-list">
             {% snippet 'bulk/snippets/filter_item.html', data=data, errors=errors %}
         </div>
+
+        <button type="button" class="btn btn-success btn-block bulk-search-btn" style="margin-top: 15px;">
+            <i class="fa fa-search"></i>
+            {{ _("Search") }}
+        </button>
     </div>
 
-    <div class="update-to-fields" style="display: none;">
-        <h3 class="d-flex justify-content-between">
-            <span>{{ _("Update on") }}:</span>
-            <button
-                type="button"
-                class="btn btn-light btn-lg btn-update-item-add"
-                hx-get="{{ h.url_for('bulk.create_update_item')}}"
-                hx-trigger="click"
-                hx-target=".update-to-fields-wrapper"
-                hx-swap="beforeend">
-                <i class="fa fa-plus"></i>
-            </button>
-        </h3>
-
-        <div class="update-to-fields-wrapper bulk-list">
-            {% snippet 'bulk/snippets/update_item.html', data=data, errors=errors %}
-        </div>
-    </div>
-
-    <div id="bulk-progress-container"></div>
-
-    <div class="form-actions">
-        <button type="button" class="btn btn-primary bulk-submit-form-btn">{{ _("Submit") }}</button>
-    </div>
-
+    <input type="hidden" name="action" value="delete" class="bulk-action-field">
     <input id="bulk_form_id" type="hidden" name="bulk_form_id" value="{{ h.bulk_generate_form_id() }}">
 </form>

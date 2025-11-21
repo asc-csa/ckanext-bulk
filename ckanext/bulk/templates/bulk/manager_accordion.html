@@ -1,30 +1,79 @@
-<div class="accordion mb-3" id="bulkAccordion">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="bulk-modal-result">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                {{ ("Search results")}}
-            </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="bulk-modal-result"
-            data-bs-parent="#bulkAccordion">
-            <div class="accordion-body" id="bulk-result-container">
-                {{ _("No results yet") }}
-            </div>
+<div class="bulk-results-container">
+    <h2 class="module-heading">
+        <i class="fa fa-list"></i>
+        {{ _("Search Results") }}
+    </h2>
+
+    {# Export and status row #}
+    <div class="bulk-info-row">
+        <div class="bulk-info-actions">
+            <a id="export-result-btn" class="btn btn-default btn-sm" type="button">
+                <i class="fa fa-download"></i>
+                {{ _("Export Results CSV") }}
+            </a>
+        </div>
+        <div class="bulk-info-status">
+            <span class="counter">{{ _("Click Search to find entities") }}</span>
+            <span class="spinner" style="display: none;">
+                {% snippet 'bulk/snippets/svg/spinner.svg' %}
+                {{ _("Loading...") }}
+            </span>
         </div>
     </div>
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="bulk-modal-logs">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                {{ ("Logs")}}
+
+    {# Results container #}
+    <div id="bulk-result-container" class="bulk-results-content">
+        <p class="text-muted">
+            <i class="fa fa-info-circle"></i>
+            {{ _("Configure your filters and click Search. Results will appear here.") }}
+        </p>
+    </div>
+
+    {# Delete button #}
+    <div class="bulk-action-buttons" style="margin-top: 20px;">
+        <div id="bulk-progress-container"></div>
+        <button type="button" class="btn btn-danger btn-block bulk-delete-btn" disabled>
+            <i class="fa fa-trash"></i>
+            {{ _("Delete All Matches") }}
+        </button>
+    </div>
+
+    {# Update fields section #}
+    <div class="bulk-update-section" style="margin-top: 30px;">
+        <h3 class="d-flex justify-content-between">
+            <span>{{ _("Update Fields") }}:</span>
+            <button
+                type="button"
+                class="btn btn-light btn-lg btn-update-item-add"
+                hx-get="{{ h.url_for('bulk.create_update_item')}}"
+                hx-trigger="click"
+                hx-target=".update-to-fields-wrapper"
+                hx-swap="beforeend">
+                <i class="fa fa-plus"></i>
             </button>
+        </h3>
+
+        <div class="update-to-fields-wrapper bulk-list">
+            {% snippet 'bulk/snippets/update_item.html', data=data, errors=errors %}
+        </div>
+
+        <button type="button" class="btn btn-primary btn-block bulk-update-btn" disabled style="margin-top: 15px;">
+            <i class="fa fa-save"></i>
+            {{ _("Update All Matches") }}
+        </button>
+    </div>
+
+    {# Logs container #}
+    <div id="bulk-logs-container" class="bulk-logs-content" style="display: none; margin-top: 30px;">
+        <h2 class="module-heading">
+            <i class="fa fa-list-alt"></i>
+            {{ _("Operation Logs") }}
         </h2>
-        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="bulk-modal-logs"
-            data-bs-parent="#bulkAccordion">
-            <div class="accordion-body" id="bulk-logs-container">
-                {{ _("No logs yet") }}
-            </div>
+        <div class="bulk-info-actions" style="margin-bottom: 15px;">
+            <a id="export-logs-btn" class="btn btn-default btn-sm" type="button">
+                <i class="fa fa-download"></i>
+                {{ _("Export Logs CSV") }}
+            </a>
         </div>
     </div>
 </div>
