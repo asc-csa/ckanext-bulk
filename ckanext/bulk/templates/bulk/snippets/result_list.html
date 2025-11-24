@@ -1,0 +1,64 @@
+{#
+Renders search results using appropriate CKAN core templates based on entity type.
+
+entities - List of entity dictionaries (datasets, organizations, or groups)
+entity_type - Type of entities being displayed ('dataset', 'organization', or 'group')
+total - Total number of entities matched
+#}
+
+{% if not entities %}
+  <div class="empty-state">
+    <p class="text-muted">
+      <i class="fa fa-search"></i>
+      No entities match your current filters. Try adjusting your search criteria.
+    </p>
+  </div>
+{% else %}
+  <div class="result-list-header">
+    <p class="text-muted">
+      {% trans count=entities|length, total=total, entity_type=entity_type, plural='s' if total != 1 else '' %}
+        <strong>{{ count }}</strong> of <strong>{{ total }}</strong> {{ entity_type }}{{ plural }} will be affected
+      {% endtrans %}
+      {% if entities|length < total %}
+        {% trans count=entities|length %}(showing first {{ count }}){% endtrans %}
+      {% endif %}
+    </p>
+  </div>
+
+  <div class="result-list-content">
+    {% if entity_type == 'dataset' %}
+      {% snippet 'snippets/package_list.html', packages=entities, hide_resources=false %}
+
+    {% elif entity_type == 'organization' %}
+      <ul class="media-grid">
+        {% for entity in entities %}
+          <li class="media-item bulk-result-item">
+            {% snippet 'snippets/organization.html', organization=entity, truncate=180, truncate_title=80 %}
+          </li>
+        {% endfor %}
+      </ul>
+
+    {% elif entity_type == 'group' %}
+      <ul class="media-grid">
+        {% for entity in entities %}
+          <li class="media-item bulk-result-item">
+            {% snippet 'snippets/group.html', group=entity, truncate=180, truncate_title=80 %}
+          </li>
+        {% endfor %}
+      </ul>
+
+    {% else %}
+      {# Fallback for unknown entity types #}
+      <ul class="list-unstyled">
+        {% for entity in entities %}
+          <li class="bulk-result-item">
+            <strong>{{ entity.get('name') or entity.get('id') }}</strong>
+            {% if entity.get('title') %}
+              - {{ entity.title }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endif %}

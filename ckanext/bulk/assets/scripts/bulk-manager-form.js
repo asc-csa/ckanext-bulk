@@ -4,14 +4,15 @@ ckan.module("bulk-manager-form", function () {
     return {
         const: {
             filterBlock: ".filters-list",
-            updateToBlock: ".update-to-fields",
-            actionSelect: ".bulk-select-action select",
+            updateToBlock: ".update-to-fields-wrapper",
             entitySelect: ".bulk-select-entity select",
-            submitBtn: ".bulk-submit-form-btn",
+            searchBtn: ".bulk-search-btn",
+            deleteBtn: ".bulk-delete-btn",
+            updateBtn: ".bulk-update-btn",
             globalOperator: "#global_operator",
-            infoBlock: ".bulk-info",
+            actionField: ".bulk-action-field",
+            infoBlock: ".bulk-info-status",
             bulkResultContainer: "#bulk-result-container",
-            bulkLogsContainer: "#bulk-logs-container",
             bulkFormIdField: "#bulk_form_id",
             exportResultBtn: "#export-result-btn",
             exportLogsBtn: "#export-logs-btn",
@@ -31,21 +32,22 @@ ckan.module("bulk-manager-form", function () {
             this.managerForm = this.el.find("form");
             this.filterBlock = $(this.const.filterBlock);
             this.updateToBlock = $(this.const.updateToBlock);
-            this.actionSelect = $(this.const.actionSelect);
             this.entitySelect = $(this.const.entitySelect);
-            this.submitBtn = $(this.const.submitBtn);
+            this.searchBtn = $(this.const.searchBtn);
+            this.deleteBtn = $(this.const.deleteBtn);
+            this.updateBtn = $(this.const.updateBtn);
             this.globalOperator = $(this.const.globalOperator);
+            this.actionField = $(this.const.actionField);
             this.infoBlock = $(this.const.infoBlock);
             this.bulkResultContainer = $(this.const.bulkResultContainer);
-            this.bulkLogsContainer = $(this.const.bulkLogsContainer);
             this.bulkFormIdField = $(this.const.bulkFormIdField);
             this.exportResultBtn = $(this.const.exportResultBtn);
             this.exportLogsBtn = $(this.const.exportLogsBtn);
 
-            this.actionSelect.on("change", this._onActionSelectChange);
             this.entitySelect.on("change", this._onEntitySelectChange);
-            this.submitBtn.on("click", this._onSubmitBtnClick);
-            this.managerForm.on("change", this._onFormChange);
+            this.searchBtn.on("click", this._onSearchBtnClick);
+            this.deleteBtn.on("click", this._onDeleteBtnClick);
+            this.updateBtn.on("click", this._onUpdateBtnClick);
             this.exportResultBtn.on("click", this._onExportResultBtnClick);
             this.exportLogsBtn.on("click", this._onExportLogsBtnClick);
 
@@ -77,7 +79,6 @@ ckan.module("bulk-manager-form", function () {
             this.bulkEntitiesToUpdate = [];
             this.bulkLogs = [];
 
-            this._onActionSelectChange();
             this._initFieldSelectors(this.filterBlock.find(".bulk-field-select select"));
             this._initFieldSelectors(this.updateToBlock.find("select"));
         },
@@ -93,15 +94,6 @@ ckan.module("bulk-manager-form", function () {
             } else if (event.detail.pathInfo.requestPath == this.htmx.addUpdate) {
                 this._initFieldSelectors(this.updateToBlock.find("select"));
             }
-        },
-
-        /**
-         * Toggle the update to block based on the selected action
-         *
-         * @param {Event} e
-         */
-        _onActionSelectChange() {
-            this.updateToBlock.toggle(this.actionSelect.val() === "update");
         },
 
         /**
@@ -210,16 +202,10 @@ ckan.module("bulk-manager-form", function () {
             return updateOn;
         },
 
-        _onFormChange(e) {
-            // if update item is changing, do not trigger the form change
-            if ($(e.target).closest(".update-field-item").length) {
-                e.preventDefault();
-                return;
-            }
-
+        _onSearchBtnClick(e) {
             const data = {
                 entity_type: this.entitySelect.val(),
-                action: this.actionSelect.val(),
+                action: "update", // Required by backend but not used for search
                 filters: this._getFilters(),
                 global_operator: this.globalOperator.is(":checked") ? "AND" : "OR",
                 bulk_form_id: this.bulkFormIdField.val(),
@@ -259,22 +245,29 @@ ckan.module("bulk-manager-form", function () {
                         return this._toggleLoadSpinner(false);
                     }
 
-                    this.bulkResultContainer.html($(`
-                        <p>Only the first ${this.options.resultMaxEntries} entities will be shown</p>
-                        <pre class='language-javascript'>
-                            ${JSON.stringify(this._limitResultEntries(data.result.entities), null, 2)}
-                        </pre>
-                    `)).promise().done(() => {
-                        Prism.highlightElement(this.bulkResultContainer.find("pre")[0]);
+                    this.bulkEntitiesToUpdate = data.result.entities;
+                    this.infoBlock.find(".counter").html("Found " + data.result.entities.length + " entities");
 
-                        this.bulkEntitiesToUpdate = data.result.entities;
-                        this.infoBlock.find(".counter").html("Found " + data.result.entities.length + " entities");
+                    // Enable action buttons
+                    this.deleteBtn.prop('disabled', false);
+                    this.updateBtn.prop('disabled', false);
 
+                    // Get rendered HTML from server
+                    $.post('/bulk/htmx/render_results', {
+                        entity_type: this.entitySelect.val(),
+                        bulk_form_id: this.bulkFormIdField.val()
+                    }, (html) => {
+                        $('#bulk-result-container').html(html);
                         this.toast.fire({
                             icon: "success",
                             title: `Found ${data.result.entities.length} entities`
                         });
-
+                        this._toggleLoadSpinner(false);
+                    }).fail(() => {
+                        this.toast.fire({
+                            icon: "error",
+                            title: "Failed to render results"
+                        });
                         this._toggleLoadSpinner(false);
                     });
                 },
@@ -372,17 +365,108 @@ ckan.module("bulk-manager-form", function () {
             this.infoBlock.find(".spinner").toggle(show);
         },
 
-        _onSubmitBtnClick: async function (e) {
+        _onDeleteBtnClick: async function (e) {
             const entity_type = this.entitySelect.val();
-            const action = this.actionSelect.val();
+            const action = "delete";
+            const bulk_form_id = this.bulkFormIdField.val();
+
+            if (!this.bulkEntitiesToUpdate.length) {
+                return this.toast.fire({
+                    icon: "error",
+                    title: "Please search for entities first"
+                });
+            }
+
+            // Confirmation dialog
+            const result = await Swal.fire({
+                title: 'Delete all matches?',
+                html: `You are about to <strong>permanently delete ${this.bulkEntitiesToUpdate.length} ${entity_type}(s)</strong>.<br><br>This action cannot be undone!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete them',
+                cancelButtonText: 'Cancel'
+            });
+
+            if (!result.isConfirmed) {
+                return;
+            }
+
+            this.bulkProgressBar = this._initProgressBar();
+
+            for (let i = 0; i < this.bulkEntitiesToUpdate.length; i++) {
+                const entity = this.bulkEntitiesToUpdate[i];
+
+                try {
+                    await this._callUpdateEntity(entity, entity_type, [], action, bulk_form_id);
+                    this.bulkProgressBar.animate(
+                        this.bulkProgressBar.value() + this.bulkProgressBarPercent
+                    );
+                } catch (error) {
+                    this.toast.fire({
+                        icon: "error",
+                        title: error
+                    });
+                }
+            };
+
+            this.bulkProgressBar.destroy();
+
+            // Get rendered logs from server
+            $.post('/bulk/htmx/render_logs', {
+                bulk_form_id: this.bulkFormIdField.val()
+            }, (html) => {
+                $('#bulk-logs-container').html(html).show();
+                this.toast.fire({
+                    icon: "success",
+                    title: "Bulk delete completed. Check the logs below"
+                });
+            }).fail(() => {
+                this.toast.fire({
+                    icon: "error",
+                    title: "Failed to render logs"
+                });
+            });
+        },
+
+        _onUpdateBtnClick: async function (e) {
+            const entity_type = this.entitySelect.val();
+            const action = "update";
             const update_on = this._getUpdateOn();
             const bulk_form_id = this.bulkFormIdField.val();
 
             if (!this.bulkEntitiesToUpdate.length) {
                 return this.toast.fire({
                     icon: "error",
-                    title: "Please, check the filters first"
+                    title: "Please search for entities first"
                 });
+            }
+
+            if (!update_on.length) {
+                return this.toast.fire({
+                    icon: "error",
+                    title: "Please specify at least one field to update"
+                });
+            }
+
+            // Build update summary for confirmation
+            const updateSummary = update_on.map(u => `<li><strong>${u.field}</strong> = "${u.value || '(empty)'}"</li>`).join('');
+
+            // Confirmation dialog
+            const result = await Swal.fire({
+                title: 'Update all matches?',
+                html: `You are about to update <strong>${this.bulkEntitiesToUpdate.length} ${entity_type}(s)</strong> with the following changes:<br><br><ul style="text-align: left;">${updateSummary}</ul>`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Yes, update them',
+                cancelButtonText: 'Cancel'
+            });
+
+            if (!result.isConfirmed) {
+                return;
             }
 
             this.bulkProgressBar = this._initProgressBar();
@@ -405,18 +489,20 @@ ckan.module("bulk-manager-form", function () {
 
             this.bulkProgressBar.destroy();
 
-            this.toast.fire({
-                icon: "success",
-                title: "Bulk operation is finished. Check the logs to see results"
-            });
-
-            this.bulkLogsContainer.html(`
-                <p>Showing last ${this.options.logsMaxEntries} entries</p>
-                <pre class='language-javascript'>
-                    ${JSON.stringify(this._limitLogsEntries(this.bulkLogs), null, 2)}
-                </pre>
-            `).promise().done(() => {
-                Prism.highlightElement(this.bulkLogsContainer.find("pre")[0]);
+            // Get rendered logs from server
+            $.post('/bulk/htmx/render_logs', {
+                bulk_form_id: this.bulkFormIdField.val()
+            }, (html) => {
+                $('#bulk-logs-container').html(html).show();
+                this.toast.fire({
+                    icon: "success",
+                    title: "Bulk update completed. Check the logs below"
+                });
+            }).fail(() => {
+                this.toast.fire({
+                    icon: "error",
+                    title: "Failed to render logs"
+                });
             });
         },
 

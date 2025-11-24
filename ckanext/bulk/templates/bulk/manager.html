@@ -4,26 +4,31 @@
     {{ _("Bulk update manager") }}
 {% endblock %}
 
-{% block primary_content %}
-    <article class="module">
-        <div class="module-content bulk-manager" data-module="bulk-manager-form">
-            {% snippet 'bulk/manager_accordion.html' %}
-            {% snippet 'bulk/manager_form.html', data=data, errors=errors %}
-        </div>
-    </article>
+{% block primary %}
+<div class="primary col-xs-12" role="main">
+    <div class="bulk-manager" data-module="bulk-manager-form">
+        {# Single column layout: Form at top, Results below #}
+        <article class="module">
+            <div class="module-content">
+                <h2 class="module-heading">
+                    <i class="fa fa-edit"></i>
+                    {{ _("Bulk Edit Form") }}
+                </h2>
+                {% snippet 'bulk/manager_form.html', data=data, errors=errors %}
+            </div>
+        </article>
+
+        <article class="module" style="margin-top: 20px;">
+            <div class="module-content">
+                {% snippet 'bulk/manager_accordion.html', data=data, errors=errors %}
+            </div>
+        </article>
+    </div>
+</div>
 {% endblock %}
 
-
-{% block secondary_content %}
-    <div class="module module-narrow module-shallow">
-        <h2 class="module-heading">
-            <i class="fa fa-info-circle"></i>
-            {{ _("Bulk update manager") }}
-        </h2>
-        <div class="module-content bulk-info">
-            {% snippet "bulk/manager_info.html" %}
-        </div>
-    </div>
+{% block secondary %}
+{# Empty block to prevent sidebar from rendering #}
 {% endblock %}
 
 {% block styles %}
