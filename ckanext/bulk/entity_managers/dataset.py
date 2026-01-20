@@ -4,11 +4,49 @@ import logging
 from typing import Any
 
 import ckan.plugins.toolkit as tk
+from ckan.lib.search.index import RESERVED_FIELDS
+from ckan.lib.search.query import escape_legacy_argument
+from ckan.model import Package
 
 from ckanext.bulk import const
 from ckanext.bulk.entity_managers import base
 
 log = logging.getLogger(__name__)
+
+# Fields that exist at top level in Solr (no extras_ prefix needed)
+_PACKAGE_FIELDS = frozenset(col.name for col in Package.__table__.columns)
+_SOLR_CORE_FIELDS = _PACKAGE_FIELDS | frozenset(RESERVED_FIELDS)
+
+
+def _to_solr_field(field: str) -> str:
+    """Convert CKAN API field name to Solr field name.
+
+    Core package fields and reserved Solr fields stay as-is.
+    Extra fields (e.g., from scheming) need 'extras_' prefix.
+    """
+    if field in _SOLR_CORE_FIELDS:
+        return field
+    return f"extras_{field}"
+
+
+def _build_word_query(field: str, value: str, negate: bool = False) -> str:
+    """Build a query matching all words in value.
+
+    For "Contribution Program", produces:
+    - (field:Contribution AND field:Program) if negate=False
+    - -(field:Contribution AND field:Program) if negate=True
+    """
+    words = value.split()
+    if not words:
+        return f"{field}:*" if not negate else f"-{field}:*"
+
+    word_clauses = [f"{field}:{escape_legacy_argument(w)}" for w in words]
+
+    if len(word_clauses) == 1:
+        return f"-{word_clauses[0]}" if negate else word_clauses[0]
+
+    combined = " AND ".join(word_clauses)
+    return f"-({combined})" if negate else f"({combined})"
 
 
 class DatasetEntityManager(base.EntityManager):
@@ -57,23 +95,25 @@ class DatasetEntityManager(base.EntityManager):
 
         for f in filters:
             operator = f["operator"]
+            field = _to_solr_field(f["field"])
+            value = f["value"]
 
             if operator == const.OP_IS:
-                q_list.append(f"{f['field']}:\"{f['value']}\"")
+                q_list.append(f"{field}:\"{value}\"")
             elif operator == const.OP_IS_NOT:
-                q_list.append(f"-{f['field']}:\"{f['value']}\"")
+                q_list.append(f"-{field}:\"{value}\"")
             elif operator == const.OP_CONTAINS:
-                q_list.append(f"{f['field']}:*{f['value']}*")
+                q_list.append(_build_word_query(field, value))
             elif operator == const.OP_DOES_NOT_CONTAIN:
-                q_list.append(f"-{f['field']}:*{f['value']}*")
+                q_list.append(_build_word_query(field, value, negate=True))
             elif operator == const.OP_STARTS_WITH:
-                q_list.append(f"{f['field']}:{f['value']}*")
+                q_list.append(f"{field}:{escape_legacy_argument(value)}*")
             elif operator == const.OP_ENDS_WITH:
-                q_list.append(f"{f['field']}:*{f['value']}")
+                q_list.append(f"{field}:*{escape_legacy_argument(value)}")
             elif operator == const.OP_IS_EMPTY:
-                q_list.append(f"(*:* AND -{f['field']}:*)")
+                q_list.append(f"(*:* AND -{field}:*)")
             elif operator == const.OP_IS_NOT_EMPTY:
-                q_list.append(f"{f['field']}:*")
+                q_list.append(f"{field}:*")
 
         return cls._fetch_search_results(
             f'type:"{cls.entity_type}" AND ({f" {global_operator} ".join(q_list)})'
