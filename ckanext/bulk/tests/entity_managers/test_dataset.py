@@ -50,7 +50,7 @@ class TestDatasetEntityManagerSearch:
         package_factory(title="test")
 
         result = dataset_entity_manager.search_entities_by_filters(
-            [{"field": "title", "operator": const.OP_CONTAINS, "value": "es"}]
+            [{"field": "title", "operator": const.OP_CONTAINS, "value": "test"}]
         )
 
         assert result
@@ -59,7 +59,7 @@ class TestDatasetEntityManagerSearch:
         package_factory(title="test")
 
         result = dataset_entity_manager.search_entities_by_filters(
-            [{"field": "title", "operator": const.OP_DOES_NOT_CONTAIN, "value": "es"}]
+            [{"field": "title", "operator": const.OP_DOES_NOT_CONTAIN, "value": "test"}]
         )
 
         assert not result
