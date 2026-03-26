@@ -166,3 +166,10 @@ msgstr "(affichage des %(count)s premiers)"
 msgid "New value"
 msgstr "Nouvelle valeur"
 
+#: ckanext/bulk/templates/bulk/snippets/update_item.html:3
+msgid "Search for field name"
+msgstr "Rechercher par champ"
+
+#: ckanext/bulk/templates/bulk/snippets/update_item.html:13
+msgid "Field value"
+msgstr "Valeur du champ"
