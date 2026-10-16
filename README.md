@@ -6,6 +6,8 @@ An extension that helps to perform bulk operations over CKAN entities, such as d
 
 ![image](docs/img/image.png)
 
+After updating translations, run `ckan -c /path/to/ckan.ini translation js` and restart CKAN.
+
 ## Interface
 
 The extension provides an `IBulk` interface that allows you to register custom entity managers or override the default ones.

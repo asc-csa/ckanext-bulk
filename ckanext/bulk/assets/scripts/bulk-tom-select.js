@@ -15,6 +15,7 @@ ckan.module("tom-select", function () {
                 return
             }
 
+            this.options.render = this.sandbox.bulk.selectRender();
             if (this.options.customRender) {
                 this.options.render.option = function (item, escape) {
                     return `
@@ -24,7 +25,6 @@ ckan.module("tom-select", function () {
                                 ${escape(item.text)}
                             </span>
                         </div>
-                        <div class="ms-auto">${escape(item.value)}</div>
                     </div>
                     `;
                 }

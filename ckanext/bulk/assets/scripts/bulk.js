@@ -8,6 +8,14 @@ jQuery(function () {
     // inside every module instance.
     ckan.sandbox.extend({
         "bulk": {
+            selectRender() {
+                return {
+                    no_results: (_, escape) => '<div class="no-results">' + escape(ckan.i18n._("No results found")) + '</div>',
+                    loading: (_, escape) => '<div class="spinner">' + escape(ckan.i18n._("Loading...")) + '</div>',
+                    option_create: (data, escape) => '<div class="create">' + escape(ckan.i18n._("Add %(input)s", {input: data.input})) + '</div>',
+                };
+            },
+
             /**
              * Transform `{hello_world_prop: 1}` into `{hello:{world:{prop: 1}}}`
              */

@@ -9,17 +9,17 @@ total - Total number of log entries
   <div class="empty-state">
     <p class="text-muted">
       <i class="fa fa-info-circle"></i>
-      No operations performed yet. Logs will appear here after you submit the form.
+      {{ _("No operations performed yet. Logs will appear here after you submit the form.") }}
     </p>
   </div>
 {% else %}
   <div class="log-list-header">
     <p class="text-muted">
-      Showing last <strong>{{ logs|length }}</strong>
-      {% if total > logs|length %}
-        of <strong>{{ total }}</strong>
-      {% endif %}
-      operation{{ 's' if logs|length != 1 else '' }}
+      {% trans count=logs|length, total=total %}
+        Showing the last <strong>{{ count }}</strong> of <strong>{{ total }}</strong> operation
+      {% pluralize total %}
+        Showing the last <strong>{{ count }}</strong> of <strong>{{ total }}</strong> operations
+      {% endtrans %}
     </p>
   </div>
 
@@ -27,11 +27,11 @@ total - Total number of log entries
     <table class="table table-striped table-bordered table-condensed">
       <thead>
         <tr>
-          <th style="width: 100px;">Status</th>
-          <th style="width: 100px;">Action</th>
-          <th style="width: 120px;">Entity Type</th>
-          <th>Entity ID</th>
-          <th>Error</th>
+          <th style="width: 100px;">{{ _('Status') }}</th>
+          <th style="width: 100px;">{{ _('Action') }}</th>
+          <th style="width: 120px;">{{ _('Entity type') }}</th>
+          <th>{{ _('Entity ID') }}</th>
+          <th>{{ _('Error') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -40,16 +40,16 @@ total - Total number of log entries
           <td>
             {% if log.error %}
               <i class="fa fa-times-circle text-danger"></i>
-              <span class="text-danger">Failed</span>
+              <span class="text-danger">{{ _('Failed') }}</span>
             {% else %}
               <i class="fa fa-check-circle text-success"></i>
-              <span class="text-success">Success</span>
+              <span class="text-success">{{ _('Success') }}</span>
             {% endif %}
           </td>
           <td>
-            <span class="label label-default">{{ log.action|capitalize }}</span>
+            <span class="label label-default">{{ _('Update') if log.action == 'update' else _('Delete') if log.action == 'delete' else log.action }}</span>
           </td>
-          <td>{{ log.entity_type|capitalize }}</td>
+          <td>{{ h.bulk_entity_label(log.entity_type) }}</td>
           <td>
             <code style="font-size: 11px;">{{ log.entity_id }}</code>
           </td>
@@ -66,16 +66,18 @@ total - Total number of log entries
     </table>
   </div>
 
-  {% set success_count = logs|selectattr('error', 'undefined')|list|length %}
+  {% set success_count = logs|rejectattr('error')|list|length %}
   {% set error_count = logs|length - success_count %}
 
   {% if logs|length > 0 %}
   <div class="log-summary">
     <p class="text-muted">
-      <i class="fa fa-check-circle text-success"></i> {{ success_count }} succeeded
+      <i class="fa fa-check-circle text-success"></i>
+      {% trans count=success_count %}{{ count }} operation succeeded{% pluralize %}{{ count }} operations succeeded{% endtrans %}
       {% if error_count > 0 %}
         &nbsp;&nbsp;
-        <i class="fa fa-times-circle text-danger"></i> {{ error_count }} failed
+        <i class="fa fa-times-circle text-danger"></i>
+        {% trans count=error_count %}{{ count }} operation failed{% pluralize %}{{ count }} operations failed{% endtrans %}
       {% endif %}
     </p>
   </div>

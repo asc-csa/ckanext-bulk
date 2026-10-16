@@ -51,7 +51,7 @@ class DatasetResourceEntityManager(base.EntityManager):
             operator = f["operator"]
 
             if operator not in supported_operators:
-                raise ValueError(f"Operator {operator} not supported")
+                raise ValueError(tk._("Operator %(operator)s is not supported", operator=operator))
 
         return cls.resource_search(filters, global_operator)
 

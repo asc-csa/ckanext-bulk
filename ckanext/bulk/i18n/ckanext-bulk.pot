@@ -1,14 +1,14 @@
 # Translations template for ckanext-bulk.
-# Copyright (C) 2025 ORGANIZATION
+# Copyright (C) 2026 ORGANIZATION
 # This file is distributed under the same license as the ckanext-bulk project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-bulk 0.4.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-21 12:23-0500\n"
+"POT-Creation-Date: 2026-10-16 11:42-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,198 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.15.0\n"
+
+#: ckanext/bulk/helpers.py:13 ckanext/bulk/templates/bulk/snippets/log_list.html:50
+msgid "Update"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:14 ckanext/bulk/templates/bulk/snippets/log_list.html:50
+msgid "Delete"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:20
+msgid "IS"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:21
+msgid "IS NOT"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:22
+msgid "CONTAINS"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:23
+msgid "DOES NOT CONTAIN"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:24
+msgid "STARTS WITH"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:25
+msgid "ENDS WITH"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:26
+msgid "IS EMPTY"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:27
+msgid "IS NOT EMPTY"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:40
+msgid "Dataset"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:41
+msgid "Resource"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:42
+msgid "Organization"
+msgstr ""
+
+#: ckanext/bulk/helpers.py:43
+msgid "Group"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/error.html:10 ckanext/bulk/views.py:23
+msgid "Not authorized to view this page"
+msgstr ""
+
+#: ckanext/bulk/views.py:24
+msgid "Not authorized"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:51
+msgid "Are you sure you want to leave this page? The bulk action is in progress."
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:115
+msgid "Do you want to clear the filters?"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:117
+msgid "Yes"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:118
+msgid "No"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:159
+msgid "You can't remove the last item"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:212
+#: ckanext/bulk/templates/bulk/manager_info.html:13
+msgid "There will be information about how many entities will be changed."
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:231
+msgid "No results yet"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:232
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:237
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:244
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:258
+#, python-format
+msgid "Found %(num)d entity"
+msgid_plural "Found %(num)d entities"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:264
+msgid "Failed to render results"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:332
+msgid "Search for field name"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:365
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:431
+msgid "Please search for entities first"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:371
+msgid "Delete all matches?"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:372
+#, python-format
+msgid "You are about to delete %(num)d matching record. Continue?"
+msgid_plural "You are about to delete %(num)d matching records. Continue?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:377
+msgid "Yes, delete them"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:378
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:465
+msgid "Cancel"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:412
+msgid "Bulk delete completed. Check the logs below"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:417
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:504
+msgid "Failed to render logs"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:438
+msgid "Please specify at least one field to update"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:448
+msgid "(empty)"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:454
+msgid "Update all matches?"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:455
+#, python-format
+msgid "You are about to update %(num)d matching record with the following changes:"
+msgid_plural "You are about to update %(num)d matching records with the following changes:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:464
+msgid "Yes, update them"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:499
+msgid "Bulk update completed. Check the logs below"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:555
+#: ckanext/bulk/assets/scripts/bulk.js:13
+msgid "No results found"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk-manager-form.js:555
+msgid "No logs found"
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk.js:14
+#: ckanext/bulk/templates/bulk/manager_accordion.html:19
+#: ckanext/bulk/templates/bulk/manager_info.html:16
+msgid "Loading..."
+msgstr ""
+
+#: ckanext/bulk/assets/scripts/bulk.js:15
+#, python-format
+msgid "Add %(input)s"
+msgstr ""
 
 #: ckanext/bulk/assets/vendor/tom-select.complete.min.js:276
 msgid "loading"
@@ -33,16 +225,26 @@ msgstr ""
 msgid "option_create"
 msgstr ""
 
+#: ckanext/bulk/entity_managers/resource.py:54
+#, python-format
+msgid "Operator %(operator)s is not supported"
+msgstr ""
+
 #: ckanext/bulk/logic/action.py:35 ckanext/bulk/logic/action.py:42
 msgid "Entity not found"
 msgstr ""
 
-#: ckanext/bulk/templates/bulk/error.html:4
-msgid "Oops! An error happened!"
+#: ckanext/bulk/logic/action.py:46
+msgid "Action is not supported"
 msgstr ""
 
-#: ckanext/bulk/templates/bulk/error.html:10
-msgid "Not authorized to view this page"
+#: ckanext/bulk/logic/action.py:111
+#, python-format
+msgid "Database error: %(statement)s"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/error.html:4
+msgid "Oops! An error happened!"
 msgstr ""
 
 #: ckanext/bulk/templates/bulk/manager.html:4
@@ -63,11 +265,6 @@ msgstr ""
 
 #: ckanext/bulk/templates/bulk/manager_accordion.html:16
 msgid "Click Search to find entities"
-msgstr ""
-
-#: ckanext/bulk/templates/bulk/manager_accordion.html:19
-#: ckanext/bulk/templates/bulk/manager_info.html:16
-msgid "Loading..."
 msgstr ""
 
 #: ckanext/bulk/templates/bulk/manager_accordion.html:28
@@ -95,6 +292,7 @@ msgid "Export Logs CSV"
 msgstr ""
 
 #: ckanext/bulk/templates/bulk/manager_form.html:5
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:32
 msgid "Entity type"
 msgstr ""
 
@@ -126,10 +324,6 @@ msgstr ""
 msgid "Export logs as CSV"
 msgstr ""
 
-#: ckanext/bulk/templates/bulk/manager_info.html:13
-msgid "There will be information about how many entities will be changed."
-msgstr ""
-
 #: ckanext/bulk/templates/bulk/snippets/filter_item.html:5
 #: ckanext/bulk/templates/bulk/snippets/update_item.html:4
 msgid "Entity Field"
@@ -144,14 +338,79 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
+#: ckanext/bulk/templates/bulk/snippets/filter_item.html:7
+msgid "Field value"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:12
+msgid "No operations performed yet. Logs will appear here after you submit the form."
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:18
+#, python-format
+msgid ""
+"Showing the last <strong>%(count)s</strong> of <strong>%(total)s</strong> "
+"operation"
+msgid_plural ""
+"Showing the last <strong>%(count)s</strong> of <strong>%(total)s</strong> "
+"operations"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:30
+msgid "Status"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:31
+msgid "Action"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:33
+msgid "Entity ID"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:34
+msgid "Error"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:43
+msgid "Failed"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:46
+msgid "Success"
+msgstr ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:76
+#, python-format
+msgid "%(count)s operation succeeded"
+msgid_plural "%(count)s operations succeeded"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/bulk/templates/bulk/snippets/log_list.html:80
+#, python-format
+msgid "%(count)s operation failed"
+msgid_plural "%(count)s operations failed"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ckanext/bulk/templates/bulk/snippets/result_list.html:13
+msgid "No entities match your current filters. Try adjusting your search criteria."
+msgstr ""
+
 #: ckanext/bulk/templates/bulk/snippets/result_list.html:19
 #, python-format
 msgid ""
-"<strong>%(count)s</strong> of <strong>%(total)s</strong> "
-"%(entity_type)s%(plural)s will be affected"
-msgstr ""
+"<strong>%(count)s</strong> of <strong>%(total)s</strong> matching record will"
+" be affected"
+msgid_plural ""
+"<strong>%(count)s</strong> of <strong>%(total)s</strong> matching records "
+"will be affected"
+msgstr[0] ""
+msgstr[1] ""
 
-#: ckanext/bulk/templates/bulk/snippets/result_list.html:23
+#: ckanext/bulk/templates/bulk/snippets/result_list.html:25
 #, python-format
 msgid "(showing first %(count)s)"
 msgstr ""

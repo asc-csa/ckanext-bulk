@@ -20,8 +20,8 @@ def not_authorized_handler(_: tk.NotAuthorized) -> tuple[str, int]:
             "bulk/error.html",
             {
                 "code": 403,
-                "content": "Not authorized to view this page",
-                "name": "Not authorized",
+                "content": tk._("Not authorized to view this page"),
+                "name": tk._("Not authorized"),
             },
         ),
         403,
@@ -42,11 +42,11 @@ def render_results() -> str:
     bulk_form_id = request.form.get("bulk_form_id", "")
 
     if not bulk_form_id:
-        return "<p class='text-muted'>No results yet</p>"
+        return tk.render("bulk/snippets/result_list.html", {"entities": []})
 
     result = get_data(f"bulk_result_{bulk_form_id}")
     if not result or not result.get("entities"):
-        return "<p class='text-muted'>No entities match your current filters</p>"
+        return tk.render("bulk/snippets/result_list.html", {"entities": []})
 
     entities = result["entities"]
     total = len(entities)
@@ -82,11 +82,11 @@ def render_logs() -> str:
     bulk_form_id = request.form.get("bulk_form_id", "")
 
     if not bulk_form_id:
-        return "<p class='text-muted'>No logs yet</p>"
+        return tk.render("bulk/snippets/log_list.html", {"logs": []})
 
     logs = get_data(f"bulk_logs_{bulk_form_id}")
     if not logs:
-        return "<p class='text-muted'>No operations performed yet</p>"
+        return tk.render("bulk/snippets/log_list.html", {"logs": []})
 
     total = len(logs)
     # Show last 50 log entries

@@ -43,7 +43,7 @@ def bulk_update_entity(context: Context, data_dict: dict[str, Any]):
         except tk.ValidationError as e:
             error = str(e.error_dict)
     else:
-        error = "Action is not supported"
+        error = tk._("Action is not supported")
 
     result = {
         "result": _format_result(result),
@@ -108,7 +108,7 @@ def bulk_get_entities_by_filters(context: Context, data_dict: dict[str, Any]):
     except DatabaseError as e:
         return {
             "entities": [],
-            "error": f"Database error: {e.statement}",
+            "error": tk._("Database error: %(statement)s", statement=e.statement),
         }
 
     # use the first implementation of the method, to allow plugins

@@ -10,14 +10,16 @@ total - Total number of entities matched
   <div class="empty-state">
     <p class="text-muted">
       <i class="fa fa-search"></i>
-      No entities match your current filters. Try adjusting your search criteria.
+      {{ _("No entities match your current filters. Try adjusting your search criteria.") }}
     </p>
   </div>
 {% else %}
   <div class="result-list-header">
     <p class="text-muted">
-      {% trans count=entities|length, total=total, entity_type=entity_type, plural='s' if total != 1 else '' %}
-        <strong>{{ count }}</strong> of <strong>{{ total }}</strong> {{ entity_type }}{{ plural }} will be affected
+      {% trans count=entities|length, total=total %}
+        <strong>{{ count }}</strong> of <strong>{{ total }}</strong> matching record will be affected
+      {% pluralize total %}
+        <strong>{{ count }}</strong> of <strong>{{ total }}</strong> matching records will be affected
       {% endtrans %}
       {% if entities|length < total %}
         {% trans count=entities|length %}(showing first {{ count }}){% endtrans %}

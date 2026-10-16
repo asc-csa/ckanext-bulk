@@ -4,7 +4,7 @@
 <div class="filter-item bulk-fieldset-item">
     {{ form.select('entity_field', label=_('Entity Field'), options=[], error=errors.entity_field, classes=["bulk-field-select"]) }}
     {{ bulk_form.select('operator', label=_('Operator'), options=h.bulk_operator_options(), error=errors.operator, classes=["bulk-operator-select"]) }}
-    {{ form.input('value', label=_('Value'), error=errors.value, placeholder="Field value", classes=["bulk-value-input"]) }}
+    {{ form.input('value', label=_('Value'), error=errors.value, placeholder=_("Field value"), classes=["bulk-value-input"]) }}
 
     <button type="button" class="btn btn-light btn-lg btn-item-remove"><i class="fa fa-trash"></i></button>
 </div>
